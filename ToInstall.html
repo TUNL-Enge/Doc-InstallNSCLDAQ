@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>To Install NSCL DAQ</title>
+<!-- 2015-10-29 Thu 14:20 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Richard Longland and John Kelley" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">To Install NSCL DAQ</h1>
+
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Prerequisites</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">General</h3>
+<div class="outline-text-3" id="text-1-1">
+<ul class="org-ul">
+<li>build-essential
+</li>
+<li>openssh-server
+</li>
+<li>magit
+</li>
+<li>libgsl0-dev
+</li>
+<li>subversion
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">nscldaq</h3>
+<div class="outline-text-3" id="text-1-2">
+<ul class="org-ul">
+<li>swig2.0 (swig in debian)
+</li>
+<li>gengetopt
+</li>
+<li>tcl8.5-dev         # defaults to tcl8.6 in ubuntu
+</li>
+<li>tk8.5-dev          # defaults to tk8.6 in ubuntu
+</li>
+<li>libtk    (tklib in debian)     # these give runtime errors if not present
+</li>
+<li>libtcl   (tcllib in debian)
+</li>
+<li>libcppunit-dev  # no errors in configure about this but it's needed!
+</li>
+<li>ftpd
+</li>
+<li>rsh-server
+</li>
+<li>rsh-client
+</li>
+<li>libusb-dev
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3">spectcl</h3>
+<div class="outline-text-3" id="text-1-3">
+<ul class="org-ul">
+<li>libmotif-dev  (liblestif2-dev in debian)
+</li>
+<li>imagemagick 
+</li>
+<li>libgd-dev  (libgd2-xpm-dev in debian)
+</li>
+<li>byacc           # build error about yacc
+</li>
+<li>flex 
+</li>
+<li>bison 
+</li>
+<li>gri  
+</li>
+<li>libtk-img-dev
+</li>
+<li>itcl3-dev
+</li>
+<li>itk3-dev
+</li>
+<li>iwidgets4
+</li>
+<li>bwidget
+</li>
+<li>blt-dev
+</li>
+<li>libxt-dev
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">General</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>Install in <code>/usr/opt/</code>
+</li>
+<li><b>DO NOT TRY ANYTHING ELSE!</b> There are some hard coded references
+in the code to this directory so it's just not worth your
+trouble&#x2026;
+</li>
+<li>Build everything as root
+<ul class="org-ul">
+<li><code>sudo su -</code>
+</li>
+<li><code>cd /usr/src/</code>
+</li>
+<li><code>mkdir NSCLDAQ</code>
+</li>
+<li><code>mkdir SpecTcl</code>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">For NSCLDAQ</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li><a href="http://sourceforge.net/projects/nscldaq/">http://sourceforge.net/projects/nscldaq/</a>
+</li>
+<li>I'm using Version 10.2.108
+</li>
+<li>By the way, if you screw up in here, make sure you <code>make clean</code>
+and remove any installed files before trying again!
+</li>
+<li>Download to <code>NSCLDAQ</code> directory and untar (<code>tar -xzvf</code>
+    <code>nscldaq-10.2-108.tar.gz</code>)
+</li>
+<li><code>cd nscldaq-10.2-108</code>
+</li>
+<li>Compile
+<ul class="org-ul">
+<li><code>./configure --prefix=/usr/opt/nscldaq/nscldaq-10.2-108 --enable-usb</code>
+</li>
+<li><code>make</code>
+</li>
+<li><code>make install</code>
+</li>
+<li><code>ln -s /usr/opt/nscldaq /usr/opt/daq</code>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">For SpecTcl</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li><a href="http://sourceforge.net/projects/nsclspectcl/">http://sourceforge.net/projects/nsclspectcl/</a>
+</li>
+<li>I'm using Version SpecTcl-3.3-016
+</li>
+<li>Download to <code>NSCLDAQ</code> directory and untar (<code>tar -xzvf</code>
+    <code>SpecTcl-3.3-016.tar.gz</code>)
+</li>
+<li><code>cd SpecTcl-3.3-016</code>
+</li>
+<li><code>./configure --prefix=/usr/opt/spectcl/SpecTcl-3.3-016</code><br  />
+    <code>--with-tcl-libdir=/usr/lib/x86_64-linux-gnu/</code>
+</li>
+<li><code>make</code>
+</li>
+<li>Touch some files to avoid errors in documentation
+<ul class="org-ul">
+<li><code>touch ccusb/dummy.html</code>
+</li>
+<li><code>touch vmusb/dummy.html</code>
+</li>
+</ul>
+</li>
+<li><code>make install</code>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">Set up some "current" links</h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
+<li><code>ln -s /usr/opt/nscldaq/nscldaq-10.2-108 /usr/opt/nscldaq/current</code>
+</li>
+<li><code>ln -s /usr/opt/spectcl/SpecTcl-3.3-016/ /usr/opt/spectcl/current</code>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6">Post-install</h2>
+<div class="outline-text-2" id="text-6">
+<ul class="org-ul">
+<li>Log out of root
+<ul class="org-ul">
+<li><code>exit</code>
+</li>
+<li><code>cd</code>
+</li>
+</ul>
+</li>
+<li>Do "the ssh trick"
+<ul class="org-ul">
+<li><code>ssh localhost</code>
+</li>
+<li>Answer "yes"
+</li>
+<li>Enter password to log in, then <code>exit</code> to log out
+</li>
+<li><code>ssh-keygen</code> and don't use a password (choose all defaults)
+</li>
+<li><code>cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</code>
+</li>
+</ul>
+</li>
+<li>Find the nscldaq file in the source directory
+<ul class="org-ul">
+<li><code>mkdir -p /home/daq/Live</code>
+</li>
+<li><code>cp /usr/src/NSCLDAQ/nscldaq-10.2-108/nscldaq ~/NSCLDAQ</code>
+</li>
+<li>Edit the nscldaq file (This has all been done and the file is in
+      <code>/home/daq/NSCLDAQ/PostInstallFiles</code>)
+<ul class="org-ul">
+<li>Make <code>DAQHOME=/usr/opt/nscldaq/current</code>
+</li>
+<li>Fix the bash script to make <code>==</code> into <code>=</code>
+</li>
+<li>Make <code>PIDFILEDIR=/home/daq/Live</code>
+</li>
+<li>Make sure ~PORTMGRSWITCHES=""~
+</li>
+</ul>
+</li>
+<li>Make it executable: <code>chmod u+x nscldaq</code>
+</li>
+<li><code>sudo ./nscldaq start</code>
+</li>
+<li><code>sudo ./nscldaq status</code>
+</li>
+<li><code>sudo ./nscldaq stop</code>
+</li>
+<li><code>sudo ./nscldaq status</code>
+</li>
+</ul>
+</li>
+<li>Copy this file into <code>/etc/init.d/</code>
+</li>
+<li>Link in runlevels so that it starts on boot<br  />
+    <code>sudo update-rc.d nscldaq defaults</code>
+</li>
+<li><code>ls /etc/rc2.d/</code> (You should see it in there somewhere)
+</li>
+<li>Reboot and check if it's running<br  />
+    <code>sudo /etc/init.d/nscldaq status</code><br  />
+    or<br  />
+    <code>ps aux | grep DaqPortManager</code><br  />
+    <code>ps aux | grep RingMaster</code>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7">Environment</h2>
+<div class="outline-text-2" id="text-7">
+<ul class="org-ul">
+<li>In .bashrc put the following (my version is in PostInstallFiles)
+<ul class="org-ul">
+<li><code>export HOMEDIR=$HOME</code>
+</li>
+<li><code>export NSCLBASE=$HOME</code>
+</li>
+<li><code>export DISTDIR=/usr/opt/applications</code>
+</li>
+<li><code>export BinDir=$HOMEDIR/bin</code>
+</li>
+<li><code>export DAQHOST=localhost</code>
+</li>
+<li><code>export SSHTARGET=localhost</code>
+</li>
+<li><code>export INSTROOT=/usr/opt/nscldaq/current</code>
+</li>
+<li>~export TCLLIBPATH="$TCLLIBPATH $INSTROOT/lib $INSTROOT/Scripts $INSTROOT/TclLibs"~
+</li>
+<li><code>export PATH=$PATH:/usr/opt/nscldaq/current/bin:/usr/opt/spectcl/current/bin:~/bin</code>
+</li>
+</ul>
+</li>
+<li>There are some files needed in <code>~/bin</code>. I'll put these in <code>/home/daq/NSCLDAQ/PostInstallFiles/bin</code>
+<ul class="org-ul">
+<li>Menu
+</li>
+<li>startCfd
+</li>
+<li>startReadout
+</li>
+<li>startScaler
+</li>
+<li>startSpecTcl
+</li>
+</ul>
+</li>
+<li>Put the Menu application in <code>/usr/opt/applications</code>.<br  />
+    I've put it in <code>/home/daq/NSCLDAQ/PostInstallFiles/menu</code>
+<ul class="org-ul">
+<li><code>sudo mkdir /usr/opt/applications</code>
+</li>
+<li><code>sudo cp -r /home/daq/NSCLDAQ/PostInstallFiles/menu /usr/opt/applications/</code>
+</li>
+</ul>
+</li>
+<li>Make an event directory and link it
+<ul class="org-ul">
+<li><code>mkdir ~/events</code>
+</li>
+<li><code>ln -s ~/events ~/stagearea</code>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8">Bin files</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+These files are all found in <code>/home/daq/NSCLDAQ/PostInstallFiles/bin/</code>
+</p>
+<ul class="org-ul">
+<li>Menu
+<ul class="org-ul">
+<li>A simple bash script to run the menu application
+</li>
+<li><code>wish $DISTDIR/menu/Menu.ui.tcl &amp;</code>
+</li>
+</ul>
+</li>
+<li>startReadout
+<ul class="org-ul">
+<li>Make sure this points at
+</li>
+<li><code>/usr/opt/nscldaq/current/bin/ReadoutShell</code>
+</li>
+<li>with <code>-host=localhost</code>
+</li>
+<li>and <code>-path=/usr/opt/nscldaq/current/bin/VMUSBReadout</code>
+</li>
+</ul>
+</li>
+<li>startScalers
+<ul class="org-ul">
+<li>Make sure this points at
+</li>
+<li><code>/usr/opt/nscldaq/current/bin/ScalerDisplay</code>
+</li>
+<li>Read the settings from <code>/config/scalerConfig.tcl</code>
+</li>
+</ul>
+</li>
+<li>startSpecTcl
+<ul class="org-ul">
+<li>This one points at SpecTcl run file
+</li>
+<li>cd into the script directory<br  />
+      <code>cd ~/config</code>
+</li>
+<li><code>exec /usr/opt/spectcl/current/bin/VMUSBSpecTcl &lt;/dev/null &amp;</code>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9">Setup Experiment</h2>
+<div class="outline-text-2" id="text-9">
+<ul class="org-ul">
+<li>The setup is in <code>~/config</code>
+</li>
+<li>Copy this from  <code>/home/daq/NSCLDAQ/PostInstallFiles/config/</code>
+</li>
+<li>Do the same for the <code>spectcl</code> directory
+<ul class="org-ul">
+<li><code>cp /home/daq/NSCLDAQ/PostInstallFiles/spectcl /home/daq/</code>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-10" class="outline-2">
+<h2 id="sec-10">Running with USB</h2>
+<div class="outline-text-2" id="text-10">
+<ul class="org-ul">
+<li>Users need access to the USB device. If you get an error that
+looks like<br  />
+    <code>CTheApplication caught a string exception: usb_get_string_simple failed in CVMUSBusb::serialNo</code><br  />
+</li>
+</ul>
+<p>
+It's probably because the user does not have USB access.
+</p>
+<ul class="org-ul">
+<li>First check that the VM-USB card is found by:
+<ul class="org-ul">
+<li>Run <code>tail -f /var/log/syslog</code>
+</li>
+<li>Unplug and replug the USB cable
+</li>
+</ul>
+</li>
+<li>Some udev rules need to be set
+<ul class="org-ul">
+<li>Edit <code>/etc/udev/rules.d/90-usb.rules</code>
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #eedd82;">SUBSYSTEM</span>==<span style="color: #ffa07a;">"usb"</span>, ENV{DEVTYPE}==<span style="color: #ffa07a;">"usb_device"</span>,   <span style="color: #eedd82;">MODE</span>=<span style="color: #ffa07a;">"0666"</span>
+</pre>
+</div>
+</li>
+<li><b>NOTE:</b> This is slightly different from the <code>usb_device</code>
+subsystem used in previous versions
+</li>
+<li>This will allow users to read and write to the usb device
+</li>
+</ul>
+</li>
+<li><b>If this doesn't work</b>
+<ul class="org-ul">
+<li>First try changing 90 to 95 in the filename above. No need to
+reboot, just unplug and replug the USB cable
+</li>
+<li>here are some useful testing utilities
+</li>
+<li>Find the device (not simply <code>/dev/usb0</code> as in old linux kernels)
+<ul class="org-ul">
+<li>In Ubuntu, do the following. In debian, you need to figure 
+out which device to use some other way!
+</li>
+<li><code>less /var/log/udev</code>
+</li>
+<li>Look for VM-USB
+</li>
+<li>eg. <code>DEVNAME=/dev/bus/usb/002/004</code>
+</li>
+<li>Use this <code>DEVNAME</code> in the commands below
+</li>
+</ul>
+</li>
+<li>Read all of the attributes of this device with<br  />
+      <code>udevadm info -a -n /dev/bus/usb/002/004</code>
+</li>
+<li>Test the udev rules as you edit them with<br  />
+      <code>udevadm test $(udevadm info -q path -n /dev/bus/usb/002/004) 2&gt;&amp;1</code>
+</li>
+<li>You should see the <code>/etc/udev/rules.d/90-usb.rules</code> get sourced
+and the permissions of the device get set to "0666"
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2014-10-03 Fri</p>
+<p class="author">Author: Richard Longland and John Kelley</p>
+<p class="date">Created: 2015-10-29 Thu 14:20</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.1 (<a href="http://orgmode.org">Org</a> mode 8.2.4)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
