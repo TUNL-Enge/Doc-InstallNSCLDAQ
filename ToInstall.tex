@@ -1,0 +1,304 @@
+% Created 2015-10-29 Thu 14:20
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\usepackage{fullpage} \usepackage{times} \usepackage{enumitem} \setlist{nolistsep,leftmargin=*}
+\author{Richard Longland and John Kelley}
+\date{2014-10-03 Fri}
+\title{To Install NSCL DAQ}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs 24.3.1 (Org mode 8.2.4)}}
+\begin{document}
+
+\maketitle
+
+
+\section*{Prerequisites}
+\label{sec-1}
+\subsection*{General}
+\label{sec-1-1}
+\begin{itemize}
+\item build-essential
+\item openssh-server
+\item magit
+\item libgsl0-dev
+\item subversion
+\end{itemize}
+
+\subsection*{nscldaq}
+\label{sec-1-2}
+\begin{itemize}
+\item swig2.0 (swig in debian)
+\item gengetopt
+\item tcl8.5-dev         \# defaults to tcl8.6 in ubuntu
+\item tk8.5-dev          \# defaults to tk8.6 in ubuntu
+\item libtk    (tklib in debian)     \# these give runtime errors if not present
+\item libtcl   (tcllib in debian)
+\item libcppunit-dev  \# no errors in configure about this but it's needed!
+\item ftpd
+\item rsh-server
+\item rsh-client
+\item libusb-dev
+\end{itemize}
+\subsection*{spectcl}
+\label{sec-1-3}
+\begin{itemize}
+\item libmotif-dev  (liblestif2-dev in debian)
+\item imagemagick
+\item libgd-dev  (libgd2-xpm-dev in debian)
+\item byacc           \# build error about yacc
+\item flex
+\item bison
+\item gri
+\item libtk-img-dev
+\item itcl3-dev
+\item itk3-dev
+\item iwidgets4
+\item bwidget
+\item blt-dev
+\item libxt-dev
+\end{itemize}
+\section*{General}
+\label{sec-2}
+\begin{itemize}
+\item Install in \verb~/usr/opt/~
+\item \textbf{DO NOT TRY ANYTHING ELSE!} There are some hard coded references
+in the code to this directory so it's just not worth your
+trouble\ldots{}
+\item Build everything as root
+\begin{itemize}
+\item \verb~sudo su -~
+\item \verb~cd /usr/src/~
+\item \verb~mkdir NSCLDAQ~
+\item \verb~mkdir SpecTcl~
+\end{itemize}
+\end{itemize}
+\section*{For NSCLDAQ}
+\label{sec-3}
+\begin{itemize}
+\item \url{http://sourceforge.net/projects/nscldaq/}
+\item I'm using Version 10.2.108
+\item By the way, if you screw up in here, make sure you \verb~make clean~
+and remove any installed files before trying again!
+\item Download to \verb~NSCLDAQ~ directory and untar (\verb~tar -xzvf~
+    \verb~nscldaq-10.2-108.tar.gz~)
+\item \verb~cd nscldaq-10.2-108~
+\item Compile
+\begin{itemize}
+\item \verb~./configure --prefix=/usr/opt/nscldaq/nscldaq-10.2-108 --enable-usb~
+\item \verb~make~
+\item \verb~make install~
+\item \verb~ln -s /usr/opt/nscldaq /usr/opt/daq~
+\end{itemize}
+\end{itemize}
+\section*{For SpecTcl}
+\label{sec-4}
+\begin{itemize}
+\item \url{http://sourceforge.net/projects/nsclspectcl/}
+\item I'm using Version SpecTcl-3.3-016
+\item Download to \verb~NSCLDAQ~ directory and untar (\verb~tar -xzvf~
+    \verb~SpecTcl-3.3-016.tar.gz~)
+\item \verb~cd SpecTcl-3.3-016~
+\item \verb~./configure --prefix=/usr/opt/spectcl/SpecTcl-3.3-016~\\
+    \verb~--with-tcl-libdir=/usr/lib/x86_64-linux-gnu/~
+\item \verb~make~
+\item Touch some files to avoid errors in documentation
+\begin{itemize}
+\item \verb~touch ccusb/dummy.html~
+\item \verb~touch vmusb/dummy.html~
+\end{itemize}
+\item \verb~make install~
+\end{itemize}
+\section*{Set up some "current" links}
+\label{sec-5}
+\begin{itemize}
+\item \verb~ln -s /usr/opt/nscldaq/nscldaq-10.2-108 /usr/opt/nscldaq/current~
+\item \verb~ln -s /usr/opt/spectcl/SpecTcl-3.3-016/ /usr/opt/spectcl/current~
+\end{itemize}
+
+\section*{Post-install}
+\label{sec-6}
+\begin{itemize}
+\item Log out of root
+\begin{itemize}
+\item \verb~exit~
+\item \verb~cd~
+\end{itemize}
+\item Do "the ssh trick"
+\begin{itemize}
+\item \verb~ssh localhost~
+\item Answer "yes"
+\item Enter password to log in, then \verb~exit~ to log out
+\item \verb~ssh-keygen~ and don't use a password (choose all defaults)
+\item \verb,cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys,
+\end{itemize}
+\item Find the nscldaq file in the source directory
+\begin{itemize}
+\item \verb~mkdir -p /home/daq/Live~
+\item \verb,cp /usr/src/NSCLDAQ/nscldaq-10.2-108/nscldaq ~/NSCLDAQ,
+\item Edit the nscldaq file (This has all been done and the file is in
+      \verb~/home/daq/NSCLDAQ/PostInstallFiles~)
+\begin{itemize}
+\item Make \verb~DAQHOME=/usr/opt/nscldaq/current~
+\item Fix the bash script to make \verb~==~ into \verb~=~
+\item Make \verb~PIDFILEDIR=/home/daq/Live~
+\item Make sure \textasciitilde{}PORTMGRSWITCHES=""\textasciitilde{}
+\end{itemize}
+\item Make it executable: \verb~chmod u+x nscldaq~
+\item \verb~sudo ./nscldaq start~
+\item \verb~sudo ./nscldaq status~
+\item \verb~sudo ./nscldaq stop~
+\item \verb~sudo ./nscldaq status~
+\end{itemize}
+\item Copy this file into \verb~/etc/init.d/~
+\item Link in runlevels so that it starts on boot\\
+    \verb~sudo update-rc.d nscldaq defaults~
+\item \verb~ls /etc/rc2.d/~ (You should see it in there somewhere)
+\item Reboot and check if it's running\\
+    \verb~sudo /etc/init.d/nscldaq status~\\
+    or\\
+    \verb~ps aux | grep DaqPortManager~\\
+    \verb~ps aux | grep RingMaster~
+\end{itemize}
+
+\section*{Environment}
+\label{sec-7}
+\begin{itemize}
+\item In .bashrc put the following (my version is in PostInstallFiles)
+\begin{itemize}
+\item \verb~export HOMEDIR=$HOME~
+\item \verb~export NSCLBASE=$HOME~
+\item \verb~export DISTDIR=/usr/opt/applications~
+\item \verb~export BinDir=$HOMEDIR/bin~
+\item \verb~export DAQHOST=localhost~
+\item \verb~export SSHTARGET=localhost~
+\item \verb~export INSTROOT=/usr/opt/nscldaq/current~
+\item \textasciitilde{}export TCLLIBPATH="\$TCLLIBPATH \$INSTROOT/lib \$INSTROOT/Scripts \$INSTROOT/TclLibs"\textasciitilde{}
+\item \verb,export PATH=$PATH:/usr/opt/nscldaq/current/bin:/usr/opt/spectcl/current/bin:~/bin,
+\end{itemize}
+\item There are some files needed in \verb,~/bin,. I'll put these in \verb~/home/daq/NSCLDAQ/PostInstallFiles/bin~
+\begin{itemize}
+\item Menu
+\item startCfd
+\item startReadout
+\item startScaler
+\item startSpecTcl
+\end{itemize}
+\item Put the Menu application in \verb~/usr/opt/applications~.\\
+    I've put it in \verb~/home/daq/NSCLDAQ/PostInstallFiles/menu~
+\begin{itemize}
+\item \verb~sudo mkdir /usr/opt/applications~
+\item \verb~sudo cp -r /home/daq/NSCLDAQ/PostInstallFiles/menu /usr/opt/applications/~
+\end{itemize}
+\item Make an event directory and link it
+\begin{itemize}
+\item \verb,mkdir ~/events,
+\item \verb,ln -s ~/events ~/stagearea,
+\end{itemize}
+\end{itemize}
+
+\section*{Bin files}
+\label{sec-8}
+These files are all found in \verb~/home/daq/NSCLDAQ/PostInstallFiles/bin/~
+\begin{itemize}
+\item Menu
+\begin{itemize}
+\item A simple bash script to run the menu application
+\item \verb~wish $DISTDIR/menu/Menu.ui.tcl &~
+\end{itemize}
+\item startReadout
+\begin{itemize}
+\item Make sure this points at
+\item \verb~/usr/opt/nscldaq/current/bin/ReadoutShell~
+\item with \verb~-host=localhost~
+\item and \verb~-path=/usr/opt/nscldaq/current/bin/VMUSBReadout~
+\end{itemize}
+\item startScalers
+\begin{itemize}
+\item Make sure this points at
+\item \verb~/usr/opt/nscldaq/current/bin/ScalerDisplay~
+\item Read the settings from \verb~/config/scalerConfig.tcl~
+\end{itemize}
+\item startSpecTcl
+\begin{itemize}
+\item This one points at SpecTcl run file
+\item cd into the script directory\\
+      \verb,cd ~/config,
+\item \verb~exec /usr/opt/spectcl/current/bin/VMUSBSpecTcl </dev/null &~
+\end{itemize}
+\end{itemize}
+
+\section*{Setup Experiment}
+\label{sec-9}
+\begin{itemize}
+\item The setup is in \verb,~/config,
+\item Copy this from  \verb~/home/daq/NSCLDAQ/PostInstallFiles/config/~
+\item Do the same for the \verb~spectcl~ directory
+\begin{itemize}
+\item \verb~cp /home/daq/NSCLDAQ/PostInstallFiles/spectcl /home/daq/~
+\end{itemize}
+\end{itemize}
+\section*{Running with USB}
+\label{sec-10}
+\begin{itemize}
+\item Users need access to the USB device. If you get an error that
+looks like\\
+    \verb~CTheApplication caught a string exception: usb_get_string_simple failed in CVMUSBusb::serialNo~\\
+\end{itemize}
+It's probably because the user does not have USB access.
+\begin{itemize}
+\item First check that the VM-USB card is found by:
+\begin{itemize}
+\item Run \verb~tail -f /var/log/syslog~
+\item Unplug and replug the USB cable
+\end{itemize}
+\item Some udev rules need to be set
+\begin{itemize}
+\item Edit \verb~/etc/udev/rules.d/90-usb.rules~
+\begin{verbatim}
+SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device",   MODE="0666"
+\end{verbatim}
+\item \textbf{NOTE:} This is slightly different from the \verb~usb_device~
+subsystem used in previous versions
+\item This will allow users to read and write to the usb device
+\end{itemize}
+\item \textbf{If this doesn't work}
+\begin{itemize}
+\item First try changing 90 to 95 in the filename above. No need to
+reboot, just unplug and replug the USB cable
+\item here are some useful testing utilities
+\item Find the device (not simply \verb~/dev/usb0~ as in old linux kernels)
+\begin{itemize}
+\item In Ubuntu, do the following. In debian, you need to figure 
+out which device to use some other way!
+\item \verb~less /var/log/udev~
+\item Look for VM-USB
+\item eg. \verb~DEVNAME=/dev/bus/usb/002/004~
+\item Use this \verb~DEVNAME~ in the commands below
+\end{itemize}
+\item Read all of the attributes of this device with\\
+      \verb~udevadm info -a -n /dev/bus/usb/002/004~
+\item Test the udev rules as you edit them with\\
+      \verb~udevadm test $(udevadm info -q path -n /dev/bus/usb/002/004) 2>&1~
+\item You should see the \verb~/etc/udev/rules.d/90-usb.rules~ get sourced
+and the permissions of the device get set to "0666"
+\end{itemize}
+\end{itemize}
+% Emacs 24.3.1 (Org mode 8.2.4)
+\end{document}
