@@ -38,6 +38,10 @@
 
 -   libusb-dev
 
+-   tcllib
+
+-   tklib
+
 ## spectcl
 
 -   libmotif-dev  (liblestif2-dev in debian)
