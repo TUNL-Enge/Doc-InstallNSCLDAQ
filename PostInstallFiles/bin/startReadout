@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Start the readout gui with the usb readout software.
+# does not matter what the cwd is so we leave it alone.
+
+# This sets the buffersize so that the readout gui won't tank.
+
+#export BUFFERSIZE=26656
+
+export INSTROOT=/usr/opt/nscldaq/current
+#
+
+$INSTROOT/bin/ReadoutShell -host=localhost -path=$INSTROOT/bin/VMUSBReadout &

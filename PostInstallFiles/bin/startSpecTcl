@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Start SpecTcl with cwd in ~/spectcl so the right scripts get run.
+# stdin is /dev/null but the tkcon gets started.
+
+cd ~/spectcl
+exec /usr/opt/spectcl/current/bin/VMUSBSpecTcl </dev/null  &

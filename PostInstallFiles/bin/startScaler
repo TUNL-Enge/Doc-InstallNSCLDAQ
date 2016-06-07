@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Start the scaler display program:
+
+$INSTROOT/bin/ScalerDisplay ~/config/scalerConfig.tcl &

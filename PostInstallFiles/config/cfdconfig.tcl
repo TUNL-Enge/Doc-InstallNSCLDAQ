@@ -1,0 +1,25 @@
+# Config file saved by v812usbcontrol.tcl Wed Feb 25 02:28:03 PM EST 2009
+set base 0x00800000
+set name cfdtest
+set thresholds(0) -248
+set thresholds(1) -232
+set thresholds(2) -232
+set thresholds(3) -232
+set thresholds(4) -232
+set thresholds(5) -232
+set thresholds(6) -232
+set thresholds(7) -232
+set thresholds(8) -232
+set thresholds(9) -232
+set thresholds(10) -232
+set thresholds(11) -232
+set thresholds(12) -232
+set thresholds(13) -232
+set thresholds(14) -232
+set thresholds(15) -232
+set widths(0) 0
+set deadtimes(0) 5
+set widths(1) 4
+set deadtimes(1) 2
+set majority 2
+set enables  65535

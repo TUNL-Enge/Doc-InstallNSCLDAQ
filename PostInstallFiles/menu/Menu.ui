@@ -1,0 +1,293 @@
+WidGet file, version 1.1, created:  Fri Nov 07 06:47:12  2003
+Widget label#5
+	geometry columnspan 5
+	geometry row 17
+	other error {}
+	other type label
+	other master {}
+	configure text {Output and  Errors.}
+	other pathname label#5
+	other tags {}
+	other level {}
+	other help {}
+	other comments {}
+	geometry column 4
+	other tabbing {}
+	other item_name label#5
+Widget text#1
+	geometry columnspan 9
+	configure xscrollcommand {%B.ouhscroll set}
+	other error {}
+	other tags {}
+	other level {}
+	other help {}
+	configure height 1
+	other master {}
+	other pathname text#1
+	geometry sticky nesw
+	configure yscrollcommand {%B.outscroll set}
+	other tabbing {}
+	other item_name output
+	geometry row 18
+	geometry rowspan 5
+	other type text
+	configure width 1
+	geometry column 2
+	other comments {}
+Widget button#2
+	geometry row 4
+	other error {}
+	other type button
+	other master {}
+	configure text Readout
+	other pathname button#2
+	other tags {}
+	other level {}
+	other help {}
+	other comments {}
+	geometry column 2
+	configure command {StartProc %W $BinDir/goReadout Readout %B.output}
+	other tabbing {}
+	other item_name button#2
+Widget listbox#1
+	geometry columnspan 9
+	geometry row 12
+	configure height 8
+	geometry rowspan 5
+	other error {}
+	other type listbox
+	other master {}
+	other pathname listbox#1
+	other tags {}
+	configure width 0
+	other level {}
+	other help {}
+	other comments {}
+	geometry column 2
+	other tabbing {}
+	other item_name processes
+	configure yscrollcommand {%B.listscroll set}
+	geometry sticky nesw
+Widget button#3
+	geometry row 4
+	other error {}
+	other type button
+	other master {}
+	configure text SpecTcl
+	other pathname button#3
+	other tags {}
+	other level {}
+	other help {}
+	other comments {}
+	geometry column 9
+	configure command {StartProc %W $BinDir/GoSpec SpecTcl}
+	other tabbing {}
+	other item_name button#3
+Widget button#4
+	geometry row 8
+	other error {}
+	other type button
+	other master {}
+	configure text {N568 Amp}
+	other pathname button#4
+	other tags {}
+	other level {}
+	other help {}
+	other comments {}
+	geometry column 2
+	configure command {StartProc %W $BinDir/goShaper Shaper %B.output}
+	other tabbing {}
+	other item_name button#4
+Widget button#5
+	geometry columnspan 2
+	geometry row 8
+	other error {}
+	other type button
+	other master {}
+	configure text {V812 cfd}
+	other pathname button#5
+	other tags {}
+	other level {}
+	other help {}
+	other comments {}
+	geometry column 5
+	configure command {StartProc %W $BinDir/goCfds Cfd %B.output}
+	other tabbing {}
+	other item_name button#5
+Widget button#6
+	geometry row 8
+	other error {}
+	other type button
+	other master {}
+	configure text {V486 GDG}
+	other pathname button#6
+	other tags {}
+	other level {}
+	other help {}
+	other comments {}
+	geometry column 9
+	configure command {StartProc %W $BinDir/goGDG GDG %B.output}
+	other tabbing {}
+	other item_name button#6
+Widget f
+	other generic_options {button {
+		} canvas {
+		} checkbutton {
+		} entry {
+		} frame {
+		} label {
+		} listbox {
+		} menubutton {
+		} message {
+		} radiobutton {
+		} scale {
+		} scrollbar {
+		} text {
+		}
+	}
+	other panel {}
+	other resize_row {0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 0 2 0 0 0 0}
+	other type frame
+	other code package\ require\ Wait\nglobal\ env\nglobal\ BinDir\nglobal\ Processes\nglobal\ WidgetRoot\n\n\nif\ \{\[array\ names\ env\ BinDir\]\ ==\ \"\"\}\ \{\n\ \ \ set\ BinDir\ ~/bin\n\}\ else\ \{\n\ \ \ set\ BinDir\ \$env(BinDir)\n\}\nset\ WidgetRoot\ \$base\n#\n#\ \ Monitor\ a\ process\ for\ exit.\n#\ \ When\ the\ process\ exits,\ enable\ its\ widget.\n#\nproc\ MonitorPid\ \{pid\ widget\}\ \{\n\ \ global\ Processes\n\ \ \n\ \ set\ status\ \[catch\ \ \"Wait\ -pid\ \$pid\ -poll\"\ result\]\n\ \ \n\ \ #\ If\ the\ catch\ fails,\ enable\ the\ widget\ too:\n\ \ #\ Since\ in\ tk\ the\ reaper\ may\ have\ caught\ this\ automatically.\n\ \ \n\ \ \ if\ \{\$status\ >\ 0\}\ \{\n\ \ \ \ \ \ \$widget\ configure\ -state\ normal\n\ \ \ \ \ \ catch\ \"unset\ Processes(\$pid)\"\n\ \ \ \ \ \ UpdateProcessList\n\ \ \ \ \ \ return\n\ \ \ \}\n\ \ \ if\ \{\$result\ ==\ \$pid\}\ \{\n\ \ \ \ \ \ \$widget\ configure\ -state\ normal\n\ \ \ \ \ \ catch\ \"unset\ Processes(\$pid)\"\n\ \ \ \ \ \ UpdateProcessList\n\ \ \ \ \ \ return\n\ \ \ \}\n\ \ \ after\ 300\ \"MonitorPid\ \$pid\ \$widget\"\n\}\n#\n#\ \ \ Process\ input\ from\ a\ pipeline\ and\ put\ it\ in\ the\ associated\n#\ \ \ text\ widget:\n#\nproc\ ProcessInput\ \{fd\ textwidget\ shortname\}\ \{\n\ \ \ if\ \{\[eof\ \$fd\]\}\ \{\n\ \ \ \ \ \ puts\ \"Closing\ \$fd\"\n\ \ \ \ \ \ fileevent\ \$fd\ readable\ \"\"\n\ \ \ \ \ \ catch\ \"close\ \$fd\"\n\ \ \ \}\ else\ \{\n\ \ \ \ \ \ set\ status\ \[catch\ \"gets\ \$fd\ line\"\]\n\ \ \ \ \ \ if\ \{\$status\ ==\ 0\}\ \{\n\t\ \ \ \ \ \ \$textwidget\ insert\ end\ \"\$shortname:\ \$line\\n\"\n\t\ \ \ \ \ \ \$textwidget\ see\ end\n\ \ \ \ \ \ \}\n\ \ \ \}\n\}\n#\n#\ \ \ Start\ a\ process\ off\ in\ the\ background\ and\ ghost\ it's\ startup\n#\ \ \ Button.\n#\ \ \nproc\ StartProc\ \{widget\ command\ \{shortname\ \"\"\}\ \{outwidget\ \"\"\}\ \}\ \{\n\tglobal\ Processes\n\t\$widget\ configure\ -state\ disabled\n\tif\ \{\$outwidget\ !=\ \"\"\}\ \{\n\t\tset\ fd\ \[open\ \"|\ \$command\"\ r\]\n\t\tfileevent\ \$fd\ readable\ \\\n\t\t\t\[list\ ProcessInput\ \$fd\ \$outwidget\ \$shortname\]\n\t\tset\ pid\ \[pid\ \$fd\]\n\t\}\ else\ \{\n\t\ \ \ \ set\ pid\ \[exec\ \$command\ &\]\n\n\ \ \ \ \ \ \ \ \}\n\tif\ \{\$shortname\ !=\ \"\"\}\ \{\n\t\tset\ command\ \"\$shortname:\ \$command\"\n\t\}\n\tset\ Processes(\$pid)\ \$command\n\tMonitorPid\ \$pid\ \$widget\ \n\tUpdateProcessList\n\n\}\n#\n#\ \ \ Update\ process\ list\ box:\n#\nproc\ UpdateProcessList\ \{\}\ \{\n\ \ \ global\ WidgetRoot\n\ \ \ global\ Processes\n\ \ \ \n\ \ \$WidgetRoot.processes\ delete\ 0\ end\ \ \n\ \ \n\ \ if\ \{\[array\ names\ Processes\]\ !=\ \"\"\}\ \{\ \n\ \ \ \n\ \ \ \ \ \ #\ Clear\ the\ box:\n\ \ \ \n\ \n\ \ \ \n\ \ \ \ \ \ foreach\ pid\ \[array\ names\ Processes\]\ \ \{\n\ \ \ \ \ \ \ \ \ \ \$WidgetRoot.processes\ insert\ end\ \$Processes(\$pid)\n\ \ \ \ \ \ \}\ \ \ \n\n\ \ \ \}\n\n\}\n\n#\n#\ \ Send\ a\ kill\ to\ all\ processes\ to\ shut\ them\ down.\ \n#\nproc\ StopAll\ \{\}\ \{\n\ \ \ global\ Processes\n\ \ \ foreach\ pid\ \[array\ names\ Processes\]\ \{\n\ \ \ \ \ \ puts\ \"Killing\ \$pid\"\n\ \ \ \ \ \ exec\ kill\ -TERM\ \$pid\n\ \ \ \}\n\}\n\n
+	other min_row {30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 42 30 30 30 30 26}
+	other master {}
+	other pathname f
+	other resize_column {0 2 0 0 0 0 2 0 2 0 0}
+	other tags {}
+	other level 0
+	configure background #e9e9e9
+	other min_column {30 30 30 30 30 30 30 30 30 30 30}
+	other help {}
+	other Colors {black white bisque grey red green blue magenta yellow SystemButtonFace}
+	other comments {}
+	other item_name f
+	other tabbing {}
+Widget button#8
+	geometry columnspan 2
+	geometry row 4
+	other error {}
+	other type button
+	other master {}
+	configure text {Scaler Display}
+	other pathname button#8
+	other tags {}
+	other level {}
+	other help {}
+	other comments {}
+	geometry column 5
+	other item_name button#8
+	other tabbing {}
+	configure command {StartProc %W $BinDir/goScaler  Scaler  %B.output }
+Widget scrollbar#1
+	geometry row 18
+	configure orient v
+	geometry rowspan 5
+	other error {}
+	other type scrollbar
+	other master {}
+	other pathname scrollbar#1
+	other tags {}
+	other level {}
+	other help {}
+	other comments {}
+	geometry column 11
+	configure command {%B.output yview}
+	other tabbing {}
+	other item_name outscroll
+	geometry sticky nsw
+Widget scrollbar#2
+	other {} {}
+	geometry columnspan 9
+	geometry row 23
+	configure orient h
+	other type scrollbar
+	other error {}
+	other master {}
+	other pathname scrollbar#2
+	other tags {}
+	other level {}
+	other help {}
+	other comments {}
+	geometry column 2
+	configure command {%B.output xview}
+	other tabbing {}
+	other item_name ouhscroll
+	geometry sticky new
+Widget scrollbar#3
+	geometry row 12
+	configure orient v
+	geometry rowspan 5
+	other error {}
+	other type scrollbar
+	other master {}
+	other pathname scrollbar#3
+	other tags {}
+	other level {}
+	other help {}
+	other comments {}
+	geometry column 11
+	configure command {%B.processes yview}
+	other tabbing {}
+	other item_name listscroll
+	geometry sticky nsw
+Widget label#1
+	geometry columnspan 10
+	geometry row 1
+	other error {}
+	other type label
+	other master {}
+	configure text {RPI Data Acquisition system Control Panel.}
+	other pathname label#1
+	other tags {}
+	other level {}
+	other help {}
+	other comments {}
+	geometry column 1
+	other tabbing {}
+	other item_name label#1
+Widget label#2
+	geometry columnspan 4
+	geometry row 2
+	other error {}
+	other type label
+	other master {}
+	configure text {Acquisition and Analysis}
+	other pathname label#2
+	other tags {}
+	other level {}
+	other help {}
+	other comments {}
+	geometry column 4
+	other tabbing {}
+	other item_name label#2
+Widget label#3
+	geometry columnspan 4
+	geometry row 6
+	other error {}
+	other type label
+	other master {}
+	configure text {Experimental Controls}
+	other pathname label#3
+	other tags {}
+	other level {}
+	other help {}
+	other comments {}
+	geometry column 4
+	other tabbing {}
+	other item_name label#3
+Widget label#4
+	geometry columnspan 5
+	geometry row 11
+	other error {}
+	other type label
+	other master {}
+	configure text {Active Process List}
+	other pathname label#4
+	other tags {}
+	other level {}
+	other help {}
+	other comments {}
+	geometry column 4
+	other tabbing {}
+	other item_name label#4
+

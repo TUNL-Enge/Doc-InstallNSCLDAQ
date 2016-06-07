@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#export BinDir=$HOMEDIR/bin
+#
+#if [ -e ~/.wienertest ]
+#then
+#   . ~/Wincluster/Personal/wiener/.bashrc
+#else
+#   . ~/.bashrc                 # This does not get sourced by kde shortcuts.
+#fi
+#   . ~/.bashrc                 # This does not get sourced by kde shortcuts.
+
+
+wish $DISTDIR/menu/Menu.ui.tcl &

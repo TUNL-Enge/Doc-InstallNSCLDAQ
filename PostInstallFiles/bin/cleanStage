@@ -1,0 +1,8 @@
+#!/bin/bash
+#
+# Clean up the stagearea like because NSCLDAQ is stupid
+
+rm -f ~/stagearea
+
+ln -s ~/events ~/stagearea
+

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+
+#  Start the CFD control panel(s).
+#  Add more of these if you have more than one CFD.
+#
+
+
+/usr/opt/cfdgui/v812usbcontrol.tcl ~/config/cfdconfig.tcl &
+
+
+
