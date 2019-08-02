@@ -27,8 +27,8 @@
    - gengetopt
    - tcl8.5-dev         # defaults to tcl8.6 in ubuntu
    - tk8.5-dev          # defaults to tk8.6 in ubuntu
-   - libtk    (tklib in debian)     # these give runtime errors if not present
-   - libtcl   (tcllib in debian)
+   - libtk8.5    (tklib in debian)     # these give runtime errors if not present
+   - libtcl8.5   (tcllib in debian)
    - libcppunit-dev  # no errors in configure about this but it's needed!
    - ftpd
    - rsh-server
@@ -64,7 +64,7 @@
     - ~mkdir NSCLDAQ~
     - ~mkdir SpecTcl~
 
-* For NSCLDAQ
+* For NSCLDAQ (UPDATE: See NSCLDAQ 11.3 instructions below)
   - http://sourceforge.net/projects/nscldaq/
   - I'm using Version 10.2.108
   - By the way, if you screw up in here, make sure you ~make clean~
@@ -78,6 +78,22 @@
     + ~make install~
     + ~ln -s /usr/opt/nscldaq /usr/opt/daq~
 
+* For NSCLDAQ 11.3
+  - The old version of NSCLDAQ doesn't work with newer version of
+    linux. This is a pain.
+  - Install packages (on top of those above):
+    - libzmq5
+    - libzmq3-dev
+    - python3-pyqt4
+    - python3-zmq
+  - Fix the buggy configure script:
+    - Change ~python~ on line 20549 to ~$PYTHON~
+  - Make sure you're using python3 and compile
+    - ~export PYTHON=python3~
+    - ~./configure --prefix=/usr/opt/nscldaq/nscldaq-11.3-016~
+    - ~make~
+    - ~make install~
+    - *STILL NOT WORKING*
 * For SpecTcl
   + http://sourceforge.net/projects/nsclspectcl/
   + I'm using Version SpecTcl-3.3-016
